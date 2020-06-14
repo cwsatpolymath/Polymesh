@@ -1,4 +1,4 @@
-name: Publish docs
+name: Build artifacts
 
 on:
   pull_request:
@@ -13,7 +13,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: check out the code
+        uses: actions/checkout@v2
 
       - name: Install rust toolchain
         uses: actions-rs/toolchain@v1
@@ -22,6 +23,15 @@ jobs:
           target: wasm32-unknown-unknown
           override: true
           default: true
+
+      - name: Configure caching for Rust
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Install wasm-gc
         uses: actions-rs/cargo@v1
@@ -36,5 +46,4 @@ jobs:
           toolchain: nightly
           command: build
           args: --release
-
 
