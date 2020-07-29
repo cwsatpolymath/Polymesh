@@ -50,12 +50,12 @@ mkdir -p ${ARTIFACT_DIR}/lib/x86_64-linux-gnu
 touch ${ARTIFACT_DIR}/var/lib/polymesh/.keep
 echo -n "${GIT_REF}-distroless" > ${ARTIFACT_DIR}/additional_tags.distroless
 echo -n "${GIT_REF}-debian"     > ${ARTIFACT_DIR}/additional_tags.debian
-cp ${GIT_DIR}/Dockerfile.distroless   ${ARTIFACT_DIR}/
-cp ${GIT_DIR}/Dockerfile.debian       ${ARTIFACT_DIR}/
-cp ${SEMVER_DIR}/version              ${ARTIFACT_DIR}/tag_file
-cp ${GIT_DIR}/target/release/polymesh ${ARTIFACT_DIR}/usr/local/bin/polymesh
-cp ${GIT_DIR}/target/release/polymesh ${ARTIFACT_DIR}/polymesh-${SEMVER}
-cp -a /lib/x86_64-linux-gnu/*         ${ARTIFACT_DIR}/lib/x86_64-linux-gnu
+cp    ${GIT_DIR}/.concourse/dockerfiles/Dockerfile.distroless ${ARTIFACT_DIR}/
+cp    ${GIT_DIR}/.concourse/dockerfiles/Dockerfile.debian     ${ARTIFACT_DIR}/
+cp    ${SEMVER_DIR}/version                                   ${ARTIFACT_DIR}/tag_file
+cp    ${GIT_DIR}/target/release/polymesh                      ${ARTIFACT_DIR}/usr/local/bin/polymesh
+cp    ${GIT_DIR}/target/release/polymesh                      ${ARTIFACT_DIR}/polymesh-${SEMVER}
+cp -a /lib/x86_64-linux-gnu/*                                 ${ARTIFACT_DIR}/lib/x86_64-linux-gnu
 for LIB in $LDLIBS; do
     mkdir -p ${ARTIFACT_DIR}/$(dirname $LIB | cut -c 2-)
     cp $LIB  ${ARTIFACT_DIR}/$(dirname $LIB | cut -c 2-)/
