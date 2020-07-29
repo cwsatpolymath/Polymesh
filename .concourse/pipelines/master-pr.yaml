@@ -13,6 +13,7 @@ resources:
     source:
       repository: cwsatpolymath/Polymesh
       access_token: ((github-pat-claus))
+      base_branch: master
   - name: s3-polymesh
     type: s3
     source:
@@ -33,7 +34,7 @@ resources:
       driver: git
       uri: git@github.com:polymathnetwork/concourse-semver-tracking
       branch: master
-      file: polymesh/version
+      file: polymesh/aldebaran-version
       private_key: ((github-polymathnetwork-concourse-semver-tracking.id_rsa))
 
 jobs:
@@ -125,7 +126,7 @@ jobs:
                 type: registry-image
                 source:
                   repository: polymathnetwork/rust
-                  tag: debian-1.45.0
+                  tag: debian-1.44.1
                   aws_access_key_id: ((polymath-ecr.aws-access-id))
                   aws_secret_access_key: ((polymath-ecr.aws-access-secret))
                   aws_region: us-east-1
@@ -160,15 +161,15 @@ jobs:
               build: artifact
               dockerfile: artifact/Dockerfile.distroless
               tag_file: artifact/tag_file
-              additional_tags: artifact/additional_tags.distroless
               tag_prefix: distroless-
+              additional_tags: artifact/additional_tags.distroless
           - put: dockerimage-polymesh
             params:
               build: artifact
               dockerfile: artifact/Dockerfile.debian
               tag_file: artifact/tag_file
-              additional_tags: artifact/additional_tags.debian
               tag_prefix: debian-
+              additional_tags: artifact/additional_tags.debian
       - put: githubpr-polymesh
         params:
           path: githubpr-polymesh
